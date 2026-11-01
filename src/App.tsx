@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import weddingStoryPoster from '../standalone/assets/wedding-story-poster.jpg';
+import weddingStoryVideo from '../standalone/assets/wedding-story.mp4';
 import {
   Volume2,
   VolumeX,
@@ -368,11 +369,6 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-[#FCF8F5] text-[#1B3A2F] selection:bg-[#D4A373]/30 selection:text-[#1B3A2F]">
-      {/* Hidden audio element */}
-      <audio id="bg-music" src={getAssetUrl('music/thousand-years.mp3')} loop preload="auto" />
-
-
-
       {/* ============================================================== */}
       {/* 3.B: Fixed Top Navigation Bar */}
       {/* ============================================================== */}
@@ -797,17 +793,24 @@ export default function App() {
             </p>
           </div>
 
-          {/* Story preview remains available until the video asset is added. */}
           <div className="relative mx-auto max-w-4xl bg-white/90 p-3 sm:p-5 md:p-6 rounded-2xl md:rounded-3xl border border-[#D4A373]/40 shadow-2xl backdrop-blur-xs">
             <div className="relative rounded-xl md:rounded-2xl overflow-hidden bg-black/95 shadow-inner">
-              <img
-                src={weddingStoryPoster}
-                alt="Pranami and Nikhil's wedding story preview"
-                className="w-full h-auto max-h-[75vh] mx-auto block object-contain"
-              />
-              <p className="absolute inset-x-0 bottom-0 bg-black/65 px-4 py-3 text-center font-sans-jost text-sm text-white">
-                Wedding story video coming soon
-              </p>
+              <video
+                controls
+                playsInline
+                preload="metadata"
+                poster={weddingStoryPoster}
+                className="w-full max-h-[75vh] mx-auto block object-contain"
+                onPlay={() => {
+                  if (weddingAudio.isPlaying()) {
+                    weddingAudio.pauseAudio();
+                    setIsPlaying(false);
+                  }
+                }}
+              >
+                <source src={weddingStoryVideo} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
 
             {/* Story Caption & Info */}
@@ -1289,6 +1292,7 @@ export default function App() {
         type="button"
         onClick={handleToggleMusic}
         aria-label={isPlaying ? 'Pause wedding music' : 'Play wedding music'}
+        title={isPlaying ? 'Pause wedding music' : 'Tap to play wedding music'}
         className="fixed bottom-6 right-6 z-40 p-3.5 bg-[#1B3A2F] text-[#D4A373] rounded-full shadow-2xl border-2 border-[#D4A373] hover:scale-110 active:scale-95 transition-transform flex items-center justify-center cursor-pointer group"
       >
         {isPlaying ? (
