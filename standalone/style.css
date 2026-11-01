@@ -1,4 +1,4 @@
-/* style.css - Nikhil & Pranami Wedding */
+/* style.css - Pranami & Nikhil Wedding */
 
 :root {
   --emerald-deep: #1B3A2F;
@@ -575,7 +575,7 @@ body {
   background: white;
 }
 
-/* Our Story Section */
+/* Pranami's Story Section */
 .story-section {
   background: linear-gradient(180deg, var(--ivory-blush) 0%, #ffffff 50%, var(--ivory-blush) 100%);
   position: relative;

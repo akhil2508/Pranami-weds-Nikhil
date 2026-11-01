@@ -5,7 +5,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import weddingStoryPoster from '../standalone/assets/wedding-story-poster.jpg';
-import weddingStoryVideo from '../standalone/assets/wedding-story.mp4';
 import {
   Volume2,
   VolumeX,
@@ -26,8 +25,6 @@ import {
   CalendarPlus,
   Download,
   ExternalLink,
-  Film,
-  Play,
   Pause
 } from 'lucide-react';
 import { weddingAudio } from './audioHelper';
@@ -63,9 +60,6 @@ const SONG_CHIPS = [
 export default function App() {
   // Audio state - start with music on
   const [isPlaying, setIsPlaying] = useState(false);
-  const [wasPlayingMusic, setWasPlayingMusic] = useState(false);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showCodeModal, setShowCodeModal] = useState(false);
   const [showCalendarModal, setShowCalendarModal] = useState(false);
@@ -244,7 +238,7 @@ export default function App() {
       attending,
       dancing,
       song: chosenSong,
-      message: blessingMessage.trim() || (attending === 'Yes' ? 'Extremely thrilled to be part of the celebrations! Wishing you endless bliss.' : 'Sending our heartfelt blessings and warm wishes to Nikhil & Pranami!'),
+      message: blessingMessage.trim() || (attending === 'Yes' ? 'Extremely thrilled to be part of the celebrations! Wishing you endless bliss.' : 'Sending our heartfelt blessings and warm wishes to Pranami & Nikhil!'),
       timestamp: 'Just now',
       likes: 1,
     };
@@ -306,19 +300,19 @@ export default function App() {
           </p>
           <div className="p-3.5 bg-[#1B3A2F]/5 border border-[#D4A373]/50 rounded-xl flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="font-bold text-[#1B3A2F] text-base">Sudhir Shukla</p>
-              <p className="font-mono text-sm text-[#A34A3A] font-semibold">+91 7905000272</p>
+              <p className="font-bold text-[#1B3A2F] text-base">Brajesh Shukla</p>
+              <p className="font-mono text-sm text-[#A34A3A] font-semibold">+91 88406 67346</p>
             </div>
             <div className="flex items-center gap-2">
               <a
-                href="tel:7905000272"
+                href="tel:+918840667346"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1B3A2F] text-white text-xs font-semibold rounded-lg hover:bg-[#1B3A2F]/90 transition-all shadow-sm"
               >
                 <Phone className="h-3.5 w-3.5 text-[#D4A373]" />
                 <span>Call Now</span>
               </a>
               <a
-                href="https://wa.me/917905000272?text=Hi%20Bhaiya,%20I%20have%20a%20query%20regarding%20Nikhil%20%26%20Pranami's%20wedding"
+                href="https://wa.me/918840667346?text=Hi%20Brajesh%20Bhaiya,%20I%20have%20a%20query%20regarding%20Pranami%20%26%20Nikhil's%20wedding"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#25D366] text-white text-xs font-semibold rounded-lg hover:bg-[#20ba5a] transition-all shadow-sm"
@@ -333,19 +327,19 @@ export default function App() {
           </p>
           <div className="p-3.5 bg-[#1B3A2F]/5 border border-[#D4A373]/50 rounded-xl flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="font-bold text-[#1B3A2F] text-base">Akhil Shukla</p>
-              <p className="font-mono text-sm text-[#A34A3A] font-semibold">+91 9919892622</p>
+              <p className="font-bold text-[#1B3A2F] text-base">Swayam Shukla</p>
+              <p className="font-mono text-sm text-[#A34A3A] font-semibold">+91 89531 19569</p>
             </div>
             <div className="flex items-center gap-2">
               <a
-                href="tel:9919892622"
+                href="tel:+918953119569"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1B3A2F] text-white text-xs font-semibold rounded-lg hover:bg-[#1B3A2F]/90 transition-all shadow-sm"
               >
                 <Phone className="h-3.5 w-3.5 text-[#D4A373]" />
                 <span>Call Now</span>
               </a>
               <a
-                href="https://wa.me/919919892622?text=Hi%20Akhil,%20I%20have%20a%20query%20regarding%20Nikhil%20%26%20Pranami's%20wedding"
+                href="https://wa.me/918953119569?text=Hi%20Swayam,%20I%20have%20a%20query%20regarding%20Pranami%20%26%20Nikhil's%20wedding"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#25D366] text-white text-xs font-semibold rounded-lg hover:bg-[#20ba5a] transition-all shadow-sm"
@@ -364,11 +358,11 @@ export default function App() {
     },
     {
       q: 'Can I bring children or additional family members?',
-      a: 'Wholeheartedly yes! Our wedding is a family reunion and little ones bring the utmost charm, joy, and laughter to the festivities.',
+      a: "Wholeheartedly yes! Pranami's family celebrations welcome little ones and all loved ones.",
     },
     {
       q: 'Are photography and social media posting encouraged?',
-      a: 'Yes! Please snap all your candid smiles and tag your memories with our official hashtag #NikKiPranami so we can relive every moment.',
+      a: "Yes! Please snap your candid smiles and tag your memories with Pranami's family celebration hashtag #PraNik.",
     },
   ];
 
@@ -388,7 +382,7 @@ export default function App() {
             href="#hero"
             className="font-script text-3xl sm:text-4xl text-[#1B3A2F] hover:text-[#A34A3A] transition-colors leading-none"
           >
-            N & P
+            P & N
           </a>
 
           {/* Desktop Nav Links */}
@@ -400,7 +394,7 @@ export default function App() {
               Events
             </a>
             <a href="#our-story" className="hover:text-[#A34A3A] transition-colors">
-              Our Story
+              Pranami's Story
             </a>
             <a href="#venue" className="hover:text-[#A34A3A] transition-colors">
               Venue
@@ -480,7 +474,7 @@ export default function App() {
               onClick={() => setMobileMenuOpen(false)}
               className="block hover:text-[#A34A3A]"
             >
-              Our Story
+              Pranami's Story
             </a>
             <a
               href="#venue"
@@ -545,7 +539,7 @@ export default function App() {
         <div className="relative z-10 max-w-3xl mx-auto text-white flex flex-col items-center">
 
           <h1 className="font-script text-6xl sm:text-7xl md:text-9xl text-white hero-title-shadow leading-tight mb-2">
-            Nikhil & Pranami
+            Pranami & Nikhil
           </h1>
 
           <div className="w-32 h-px bg-gradient-to-r from-transparent via-[#D4A373] to-transparent mb-5" />
@@ -772,7 +766,7 @@ export default function App() {
       </div>
 
       {/* ============================================================== */}
-      {/* Our Story Video Section */}
+      {/* Pranami's Story Video Section */}
       {/* Placed between Events Timeline (Vidai) and Venue */}
       {/* ============================================================== */}
       <section
@@ -790,97 +784,41 @@ export default function App() {
           <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#D4A373]/15 border border-[#D4A373]/40 text-[#A34A3A] font-sans-jost text-xs font-semibold tracking-[0.25em] uppercase mb-3 shadow-xs">
               <Heart className="w-3.5 h-3.5 fill-[#A34A3A] text-[#A34A3A]" />
-              <span>A Journey of Love &amp; Togetherness</span>
+              <span>Pranami's Journey to Forever</span>
               <Sparkles className="w-3.5 h-3.5 text-[#D4A373]" />
             </div>
 
             <h2 className="font-script text-5xl sm:text-6xl md:text-7xl text-[#1B3A2F] mt-1 leading-tight">
-              Our Story
+              Pranami's Story
             </h2>
             <div className="h-px w-28 mx-auto bg-gradient-to-r from-transparent via-[#D4A373] to-transparent my-3.5" />
             <p className="font-serif-cormorant text-lg sm:text-xl text-[#1B3A2F]/80 italic max-w-xl mx-auto">
-              "Every love story is beautiful, but ours is our favorite. Celebrate the cherished moments and memories leading to forever."
+              "Celebrate the cherished moments in Pranami's journey as she begins a new chapter with Nikhil."
             </p>
           </div>
 
-          {/* Video Player Container */}
+          {/* Story preview remains available until the video asset is added. */}
           <div className="relative mx-auto max-w-4xl bg-white/90 p-3 sm:p-5 md:p-6 rounded-2xl md:rounded-3xl border border-[#D4A373]/40 shadow-2xl backdrop-blur-xs">
-            <div className="relative rounded-xl md:rounded-2xl overflow-hidden bg-black/95 shadow-inner group">
-              <video
-                ref={videoRef}
-                controls
-                playsInline
-                preload="metadata"
-                poster={weddingStoryPoster}
+            <div className="relative rounded-xl md:rounded-2xl overflow-hidden bg-black/95 shadow-inner">
+              <img
+                src={weddingStoryPoster}
+                alt="Pranami and Nikhil's wedding story preview"
                 className="w-full h-auto max-h-[75vh] mx-auto block object-contain"
-                onPlay={() => {
-                  setIsVideoPlaying(true);
-                  if (isPlaying) {
-                    weddingAudio.pauseAudio();
-                    setWasPlayingMusic(true);
-                  }
-                }}
-                onPause={() => {
-                  setIsVideoPlaying(false);
-                  if (wasPlayingMusic) {
-                    weddingAudio.startAudio();
-                    setWasPlayingMusic(false);
-                  }
-                }}
-                onEnded={() => {
-                  setIsVideoPlaying(false);
-                  if (wasPlayingMusic) {
-                    weddingAudio.startAudio();
-                    setWasPlayingMusic(false);
-                  }
-                }}
-              >
-                <source src={weddingStoryVideo} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-
-              {/* Big Play Overlay (shown when paused for guaranteed 1-tap playback on iOS and Android) */}
-              {!isVideoPlaying && (
-                <button
-                  type="button"
-                  onClick={async () => {
-                    if (!videoRef.current) return;
-                    try {
-                      if (isPlaying) {
-                        weddingAudio.pauseAudio();
-                        setWasPlayingMusic(true);
-                      }
-                      await videoRef.current.play();
-                      setIsVideoPlaying(true);
-                    } catch (e) {
-                      console.warn('Video play triggered:', e);
-                    }
-                  }}
-                  className="absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-black/30 hover:bg-black/20 active:bg-black/45 transition-all cursor-pointer z-10"
-                  aria-label="Play Nikhil & Pranami Wedding Story Video"
-                >
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#A34A3A]/90 hover:bg-[#A34A3A] text-white flex items-center justify-center shadow-2xl border-2 border-white/90 transform hover:scale-110 active:scale-95 transition-all">
-                    <Play className="w-8 h-8 sm:w-9 sm:h-9 fill-white text-white translate-x-0.5" />
-                  </div>
-                  <span className="mt-3 px-4 py-1.5 rounded-full bg-black/65 backdrop-blur-sm text-white font-sans-jost text-xs sm:text-sm font-medium tracking-wide border border-white/20 shadow-md">
-                    Watch Our Story
-                  </span>
-                </button>
-              )}
+              />
+              <p className="absolute inset-x-0 bottom-0 bg-black/65 px-4 py-3 text-center font-sans-jost text-sm text-white">
+                Wedding story video coming soon
+              </p>
             </div>
 
-            {/* Video Caption & Info */}
+            {/* Story Caption & Info */}
             <div className="mt-4 px-2 sm:px-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-sans-jost text-[#1B3A2F]/75">
               <div className="flex items-center gap-2 font-medium">
-                <span className="p-1 rounded-md bg-[#A34A3A]/10 text-[#A34A3A]">
-                  <Film className="w-4 h-4" />
-                </span>
-                <span className="font-semibold text-[#1B3A2F]">Nikhil &amp; Pranami</span>
+                <span className="font-semibold text-[#1B3A2F]">Pranami &amp; Nikhil</span>
                 <span className="text-[#D4A373]">•</span>
                 <span>The Journey to Forever</span>
               </div>
               <span className="text-center sm:text-right text-[#1B3A2F]/65 italic">
-                Press play to watch our story
+                A celebration of Pranami's journey
               </span>
             </div>
           </div>
@@ -944,22 +882,22 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Navigation Help Contact: Akhil Shukla */}
+                  {/* Navigation Help Contact: Swayam Shukla */}
                   <div className="p-4 bg-[#1B3A2F]/5 rounded-xl border border-[#D4A373]/40">
                     <p className="font-semibold text-[#A34A3A] mb-1">Venue Navigation & Help:</p>
                     <p className="text-xs text-[#1B3A2F]/80 mb-2">
-                      Need route guidance or any help? Contact Akhil:
+                      Need route guidance or any help? Contact Swayam:
                     </p>
                     <div className="flex items-center gap-2">
                       <a
-                        href="tel:9919892622"
+                        href="tel:+918953119569"
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1B3A2F] text-white text-xs font-semibold rounded-lg hover:bg-[#1B3A2F]/90 transition-colors"
                       >
                         <Phone className="h-3 w-3 text-[#D4A373]" />
-                        <span>9919892622</span>
+                        <span>+91 89531 19569</span>
                       </a>
                       <a
-                        href="https://wa.me/919919892622?text=Hello%20Akhil,%20can%20you%20help%20with%20directions%20to%20Royal%20Anand%20Resort?"
+                        href="https://wa.me/918953119569?text=Hello%20Swayam,%20can%20you%20help%20with%20directions%20to%20Royal%20Anand%20Resort?"
                         target="_blank"
                         rel="noreferrer"
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#25D366] text-white text-xs font-semibold rounded-lg hover:bg-[#20ba5a] transition-colors"
@@ -1007,7 +945,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 2. FAQ Section (Accordion Style with Humor & Akhil Shukla Contact) */}
+      {/* 2. FAQ Section */}
       <section id="faq" className="py-20 px-4 sm:px-6 lg:px-8 bg-white border-t border-[#D4A373]/30">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
@@ -1064,7 +1002,7 @@ export default function App() {
             </h2>
             <div className="h-px w-24 mx-auto bg-[#D4A373] my-3" />
             <p className="font-serif-cormorant text-lg text-[#1B3A2F]/80">
-              Your gracious presence and blessings mean the world to Nikhil & Pranami.
+              Pranami's family would be delighted to celebrate this special occasion with you.
             </p>
           </div>
 
@@ -1090,7 +1028,7 @@ export default function App() {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. Akhil Shukla & Family"
+                    placeholder="e.g. Swayam Shukla & Family"
                     className="w-full py-2.5 px-4 rounded-xl border border-[#D4A373]/50 focus:outline-none focus:ring-2 focus:ring-[#A34A3A] font-sans-jost text-sm"
                   />
                 </div>
@@ -1208,7 +1146,7 @@ export default function App() {
 
                 <div>
                   <label className="block font-serif-cormorant text-lg font-bold text-[#1B3A2F] mb-1">
-                    Your Blessing or Message for Nikhil & Pranami
+                    Your Blessing or Message for Pranami & Nikhil
                   </label>
                   <textarea
                     rows={3}
@@ -1257,7 +1195,7 @@ export default function App() {
                 Be the First to Send a Blessing!
               </h3>
               <p className="font-sans-jost text-sm text-[#1B3A2F]/70 mb-5">
-                No wishes have been posted yet. Fill in the RSVP form above to send your love, congratulations, or dance track for Nikhil & Pranami.
+                No wishes have been posted yet. Fill in the RSVP form above to send your love, congratulations, or dance track for Pranami & Nikhil.
               </p>
               <a
                 href="#rsvp"
@@ -1321,7 +1259,7 @@ export default function App() {
       <footer className="bg-[#1B3A2F] text-[#FCF8F5] py-14 px-4 border-t border-[#D4A373]/40 text-center">
         <div className="max-w-4xl mx-auto flex flex-col items-center space-y-4">
           <div className="font-script text-5xl text-[#D4A373] tracking-wide">
-            Nikhil & Pranami
+            Pranami & Nikhil
           </div>
           <p className="font-sans-jost text-xs tracking-[0.2em] uppercase text-[#D4A373]/90">
             11 · 12 · 2026 · Royal Anand Resort & Club
@@ -1337,7 +1275,7 @@ export default function App() {
           </p>
 
           <div className="pt-4 text-xs font-sans-jost text-[#FCF8F5]/50 flex items-center gap-3">
-            <span>#NikKiPranami</span>
+            <span>#PraNik</span>
             <span>·</span>
             <span>All Celebrations & Rituals Protected with Blessings</span>
           </div>
@@ -1464,7 +1402,7 @@ export default function App() {
               Save the Date
             </h3>
             <p className="font-script text-xl text-[#A34A3A] mb-4">
-              Nikhil & Pranami's Wedding
+              Pranami & Nikhil's Wedding
             </p>
 
             {/* Event Summary Card */}

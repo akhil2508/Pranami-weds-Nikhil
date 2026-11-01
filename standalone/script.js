@@ -1,4 +1,4 @@
-// script.js - Nikhil & Pranami Wedding Website
+// script.js - Pranami & Nikhil Wedding Website
 
 document.addEventListener('DOMContentLoaded', () => {
   // Elements
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Calendar (.ics & Google Calendar) Direct Action
   // ==============================================================
   const heroDateBtn = document.getElementById('hero-date-btn');
-  const googleCalendarUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Nikhil+%26+Pranami+Wedding+Celebration&dates=20261211T113000Z/20261212T023000Z&details=Celebrate+the+wedding+of+Nikhil+and+Pranami+at+Royal+Anand+Resort+%26+Club.+Contact+Akhil+Shukla:+9919892622&location=Royal+Anand+Resort+%26+Club%2C+Kanpur%2C+Uttar+Pradesh';
+  const googleCalendarUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pranami+%26+Nikhil+Wedding+Celebration&dates=20261211T113000Z/20261212T023000Z&details=Pranami%27s+family+warmly+invites+you+to+celebrate+her+wedding+with+Nikhil+at+Royal+Anand+Resort+%26+Club.+Contact+Brajesh+Shukla%3A+%2B91+88406+67346+or+Swayam+Shukla%3A+%2B91+89531+19569&location=Royal+Anand+Resort+%26+Club%2C+Kanpur%2C+Uttar+Pradesh';
 
   if (heroDateBtn) {
     heroDateBtn.style.cursor = 'pointer';
@@ -123,15 +123,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const icsLines = [
         'BEGIN:VCALENDAR',
         'VERSION:2.0',
-        'PRODID:-//Nikhil & Pranami//Wedding Celebration//EN',
+        'PRODID:-//Pranami & Nikhil//Wedding Celebration//EN',
         'CALSCALE:GREGORIAN',
         'METHOD:PUBLISH',
         'BEGIN:VEVENT',
-        'UID:nikhil-pranami-wedding-2026@celebration',
+        'UID:pranami-nikhil-wedding-2026@celebration',
         'DTSTART:20261211T113000Z',
         'DTEND:20261212T023000Z',
-        'SUMMARY:Nikhil & Pranami Wedding Celebration',
-        'DESCRIPTION:Join us for the grand wedding celebration of Nikhil and Pranami at Royal Anand Resort & Club. Contact Akhil Shukla: +91 9919892622.',
+        'SUMMARY:Pranami & Nikhil Wedding Celebration',
+        "DESCRIPTION:Pranami's family warmly invites you to celebrate her wedding with Nikhil at Royal Anand Resort & Club. Contact Brajesh Shukla at +91 88406 67346 or Swayam Shukla at +91 89531 19569.",
         'LOCATION:Royal Anand Resort & Club, Kanpur, Uttar Pradesh',
         'STATUS:CONFIRMED',
         'END:VEVENT',
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'Nikhil_and_Pranami_Wedding.ics';
+      a.download = 'Pranami_and_Nikhil_Wedding.ics';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div style="grid-column: 1/-1; text-align: center; padding: 2.5rem 1rem; background: #FCF8F5; border: 1px dashed rgba(212, 163, 115, 0.6); border-radius: 1rem; max-width: 450px; margin: 0 auto;">
           <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">💌</div>
           <h4 style="font-family: var(--font-serif); font-size: 1.4rem; color: #1B3A2F; margin-bottom: 0.5rem;">Be the First to Send a Blessing!</h4>
-          <p style="font-family: var(--font-sans); font-size: 0.875rem; color: rgba(27, 58, 47, 0.7); margin-bottom: 1rem;">No wishes have been posted yet. Submit the RSVP form to send your warm wishes for Nikhil & Pranami.</p>
+          <p style="font-family: var(--font-sans); font-size: 0.875rem; color: rgba(27, 58, 47, 0.7); margin-bottom: 1rem;">No wishes have been posted yet. Submit the RSVP form to send your warm wishes for Pranami & Nikhil.</p>
           <a href="#rsvp" class="rsvp-btn" style="display: inline-block; padding: 0.6rem 1.25rem; font-size: 0.75rem; text-decoration: none;">Write a Blessing</a>
         </div>
       `;
@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const attendingVal = document.getElementById('rsvp-attending').value;
     const danceVal = document.getElementById('rsvp-dance').value;
     const finalSong = customSongInput.value.trim() || selectedSongChip || (danceVal === 'Yes' ? 'Bollywood Hits' : '');
-    const messageVal = document.getElementById('rsvp-message').value.trim() || (attendingVal === 'Yes' ? 'Looking forward to celebrating with you both!' : 'Warmest wishes and blessings for your wedding!');
+    const messageVal = document.getElementById('rsvp-message').value.trim() || (attendingVal === 'Yes' ? "Looking forward to celebrating Pranami's wedding with Nikhil!" : 'Warmest wishes and blessings for the wedding!');
 
     saveBlessing({
       id: String(Date.now()),
