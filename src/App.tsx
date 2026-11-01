@@ -1295,6 +1295,11 @@ export default function App() {
         title={isPlaying ? 'Pause wedding music' : 'Tap to play wedding music'}
         className="fixed bottom-6 right-6 z-40 p-3.5 bg-[#1B3A2F] text-[#D4A373] rounded-full shadow-2xl border-2 border-[#D4A373] hover:scale-110 active:scale-95 transition-transform flex items-center justify-center cursor-pointer group"
       >
+        {!isPlaying && (
+          <span className="absolute right-full mr-3 whitespace-nowrap rounded-full border border-[#D4A373]/70 bg-[#1B3A2F] px-3 py-2 text-xs font-medium text-white shadow-xl">
+            Tap to play music
+          </span>
+        )}
         {isPlaying ? (
           <div className="relative flex items-center justify-center">
             <Volume2 className="h-6 w-6 animate-pulse" />
