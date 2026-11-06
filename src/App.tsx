@@ -36,17 +36,11 @@ import {
   downloadIcsFile,
   type WeddingEvent
 } from './weddingData';
-
-interface Blessing {
-  id: string;
-  name: string;
-  attending: string;
-  dancing: string;
-  song?: string;
-  message: string;
-  timestamp: string;
-  likes: number;
-}
+import {
+  loadSheetBlessings,
+  submitRsvp,
+  type SheetBlessing
+} from './sheetsApi';
 
 const SONG_CHIPS = [
   'Bole Chudiyan',
@@ -95,9 +89,13 @@ export default function App() {
   const [customSong, setCustomSong] = useState('');
   const [blessingMessage, setBlessingMessage] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState('');
 
-  // Blessings Wall - empty by default, only populated when a guest gives a blessing
-  const [blessings, setBlessings] = useState<Blessing[]>([]);
+  const [blessings, setBlessings] = useState<SheetBlessing[]>([]);
+  const [blessingsLoading, setBlessingsLoading] = useState(true);
+  const [blessingsError, setBlessingsError] = useState('');
+  const [wallReloadKey, setWallReloadKey] = useState(0);
 
   // FAQ Accordion active states
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -107,23 +105,29 @@ export default function App() {
 
   const eventSectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
 
-  // Initialize blessings from localStorage, stripping any legacy seed examples
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('wedding_blessings_nikhil_pranami');
-      if (stored) {
-        const parsed: Blessing[] = JSON.parse(stored);
-        // Exclude legacy mock seed examples
-        const realBlessings = parsed.filter((b) => !b.id.startsWith('seed-'));
-        setBlessings(realBlessings);
-        localStorage.setItem('wedding_blessings_nikhil_pranami', JSON.stringify(realBlessings));
-      } else {
-        setBlessings([]);
-      }
-    } catch {
-      setBlessings([]);
-    }
-  }, []);
+    let cancelled = false;
+    setBlessingsLoading(true);
+    setBlessingsError('');
+    loadSheetBlessings()
+      .then((entries) => {
+        if (!cancelled) setBlessings(entries);
+      })
+      .catch((error: unknown) => {
+        if (!cancelled) {
+          setBlessingsError(
+            error instanceof Error ? error.message : 'Could not load responses from the Google Sheet.'
+          );
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setBlessingsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [wallReloadKey]);
 
   // IntersectionObserver for reveal animations
   useEffect(() => {
@@ -228,53 +232,80 @@ export default function App() {
   };
 
   // RSVP Submit Handler
-  const handleRsvpSubmit = (e: React.FormEvent) => {
+  const handleRsvpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
 
     const chosenSong = customSong.trim() || selectedSong || (dancing === 'Yes' ? 'Bollywood Mashup' : undefined);
-    const newBlessing: Blessing = {
-      id: 'blessing-' + Date.now(),
+    const submission = {
+      id: `rsvp-${Date.now()}-${Math.random().toString(36).slice(2)}`,
       name: name.trim(),
       attending,
       dancing,
-      song: chosenSong,
+      song: chosenSong ?? '',
       message: blessingMessage.trim() || (attending === 'Yes' ? 'Extremely thrilled to be part of the celebrations! Wishing you endless bliss.' : 'Sending our heartfelt blessings and warm wishes to Pranami & Nikhil!'),
-      timestamp: 'Just now',
-      likes: 1,
+      timestamp: new Date().toISOString(),
     };
 
-    const updated = [newBlessing, ...blessings];
-    setBlessings(updated);
+    setIsSubmitting(true);
+    setFormError('');
     try {
-      localStorage.setItem('wedding_blessings_nikhil_pranami', JSON.stringify(updated));
-    } catch {
-      // ignore
-    }
+      const previousMatchCount = blessings.filter((entry) =>
+        entry.name === submission.name &&
+        entry.attending === submission.attending &&
+        entry.message === submission.message
+      ).length;
+      await submitRsvp(submission);
 
-    setFormSubmitted(true);
-    setName('');
-    setCustomSong('');
-    setSelectedSong('');
-    setBlessingMessage('');
-
-    setTimeout(() => {
-      setFormSubmitted(false);
-      const wallEl = document.getElementById('blessings');
-      if (wallEl) {
-        wallEl.scrollIntoView({ behavior: 'smooth' });
+      let updated: SheetBlessing[] = [];
+      let confirmed = false;
+      for (let attempt = 0; attempt < 3; attempt += 1) {
+        await new Promise((resolve) => window.setTimeout(resolve, 750));
+        updated = await loadSheetBlessings();
+        const matchingEntries = updated.filter((entry) =>
+          entry.id === submission.id ||
+          (
+            entry.name === submission.name &&
+            entry.attending === submission.attending &&
+            entry.message === submission.message
+          )
+        );
+        if (matchingEntries.length > previousMatchCount) {
+          confirmed = true;
+          break;
+        }
       }
-    }, 1800);
+
+      if (!confirmed) {
+        throw new Error(
+          'The response could not be confirmed in the Google Sheet. Check that its Apps Script deployment accepts POST submissions, then check the sheet before trying again.'
+        );
+      }
+
+      setBlessings(updated);
+      setFormSubmitted(true);
+      setName('');
+      setCustomSong('');
+      setSelectedSong('');
+      setBlessingMessage('');
+
+      window.setTimeout(() => {
+        setFormSubmitted(false);
+        const wallEl = document.getElementById('blessings');
+        if (wallEl) wallEl.scrollIntoView({ behavior: 'smooth' });
+      }, 1800);
+    } catch (error: unknown) {
+      setFormError(
+        error instanceof Error ? error.message : 'Your response could not be saved. Please try again.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleLikeBlessing = (id: string) => {
     const updated = blessings.map((b) => (b.id === id ? { ...b, likes: b.likes + 1 } : b));
     setBlessings(updated);
-    try {
-      localStorage.setItem('wedding_blessings_nikhil_pranami', JSON.stringify(updated));
-    } catch {
-      // ignore
-    }
   };
 
   // FAQ entries
@@ -1160,12 +1191,19 @@ export default function App() {
                   />
                 </div>
 
+                {formError && (
+                  <p role="alert" className="font-sans-jost text-sm text-red-700">
+                    {formError}
+                  </p>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full py-3.5 px-6 bg-[#A34A3A] text-white font-sans-jost font-semibold text-sm tracking-wider uppercase rounded-xl hover:bg-[#A34A3A]/90 active:scale-98 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={isSubmitting}
+                  className="w-full py-3.5 px-6 bg-[#A34A3A] text-white font-sans-jost font-semibold text-sm tracking-wider uppercase rounded-xl hover:bg-[#A34A3A]/90 active:scale-98 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-wait"
                 >
                   <Send className="h-4 w-4" />
-                  <span>Send RSVP & Blessings</span>
+                  <span>{isSubmitting ? 'Saving your response...' : 'Send RSVP & Blessings'}</span>
                 </button>
               </form>
             )}
@@ -1189,7 +1227,24 @@ export default function App() {
             </p>
           </div>
 
-          {blessings.length === 0 ? (
+          {blessingsLoading ? (
+            <p className="text-center font-sans-jost text-sm text-[#1B3A2F]/70" role="status">
+              Loading blessings...
+            </p>
+          ) : blessingsError ? (
+            <div className="max-w-md mx-auto text-center py-8 px-6 rounded-2xl bg-[#FCF8F5] border border-[#D4A373]/40">
+              <p className="font-sans-jost text-sm text-[#A34A3A] mb-4" role="alert">
+                {blessingsError}
+              </p>
+              <button
+                type="button"
+                onClick={() => setWallReloadKey((key) => key + 1)}
+                className="px-5 py-2.5 bg-[#A34A3A] text-white text-xs font-sans-jost font-semibold uppercase tracking-wider rounded-xl hover:bg-[#A34A3A]/90 transition-all shadow-sm cursor-pointer"
+              >
+                Try again
+              </button>
+            </div>
+          ) : blessings.length === 0 ? (
             <div className="max-w-md mx-auto text-center py-12 px-6 rounded-2xl bg-[#FCF8F5] border border-dashed border-[#D4A373]/60 shadow-sm">
               <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[#A34A3A]/10 flex items-center justify-center text-[#A34A3A]">
                 <Heart className="h-6 w-6 fill-[#A34A3A]/20" />
